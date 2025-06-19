@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Online Library</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      background: #f9fafb;
+      color: #333;
+    }
+
+    header {
+      background: #4f46e5;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .book-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .book-card img {
+      max-width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .book-card h3 {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .book-card a {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      background: #4f46e5;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    form {
+      max-width: 500px;
+      margin: 3rem auto;
+      padding: 1.5rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    form h2 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      background: #4f46e5;
+      color: white;
+      padding: 0.6rem;
+      width: 100%;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .confirmation {
+      text-align: center;
+      color: green;
+      margin-top: 1rem;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+      padding: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>📚 My Online Library</h1>
+    <p>Click a book to download the PDF</p>
+  </header>
+
+  <main>
+    <section class="book-grid" id="bookGrid">
+      <!-- Books will be inserted here by JavaScript -->
+    </section>
+
+    <form id="requestForm">
+      <h2>Request a Book</h2>
+      <label for="title">Book Title *</label>
+      <input type="text" id="title" name="title" required />
+
+      <label for="author">Author</label>
+      <input type="text" id="author" name="author" />
+
+      <label for="email">Your Email (optional)</label>
+      <input type="email" id="email" name="email" />
+
+      <button type="submit">Send Request</button>
+
+      <div class="confirmation" id="confirmationMsg"></div>
+    </form>
+  </main>
+
+  <footer>
+    &copy; 2025 My Online Library. All rights reserved.
+  </footer>
+
+  <script>
+    const books = [
+        { 
+            title: "7 Habits of Highly Effective People", 
+            cover: "7-habits-of-highly-effective-people.jpg",
+            pdf: "7-Habits-of-Highly-Effective-People.pdf" 
+        },
+        { 
+            title: "Atomic Habits", 
+            cover: "atomic-habits.jpg",
+            pdf: "Atomic-Habits.pdf" 
+        },
+        { 
+            title: "Betting On You", 
+            cover: "betting-on-you.jpg",
+            pdf: "Betting-On-You.pdf" 
+        },
+        { 
+            title: "Deep Work", 
+            cover: "deep-work.jpg",
+            pdf: "Deep-Work.pdf" 
+        },
+        { 
+            title: "Good to Great", 
+            cover: "good-to-great.jpg",
+            pdf: "Good-to-Great.pdf" 
+        },
+        { 
+            title: "Grit", 
+            cover: "grit.jpg",
+            pdf: "Grit.pdf" 
+        },
+        { 
+            title: "How to Win Friends and Influence People", 
+            cover: "how-to-win-friends.jpg",
+            pdf: "How-to-Win-Friends-and-Influence-People.pdf" 
+        },
+        { 
+            title: "The 4-Hour Workweek", 
+            cover: "4-hour-workweek.jpg",
+            pdf: "The-4-Hour-Workweek.pdf" 
+        },
+        { 
+            title: "The Power of Now", 
+            cover: "power-of-now.jpg",
+            pdf: "The-Power-of-Now.pdf" 
+        },
+        { 
+            title: "Rich Dad Poor Dad", 
+            cover: "rich-dad-poor-dad.jpg",
+            pdf: "Rich-Dad-Poor-Dad.pdf" 
+        },
+        { 
+            title: "The Bitcoin Standard", 
+            cover: "the-bitcoin-standard.png",
+            pdf: "The-Bitcoin-Standard.pdf" 
+        },
+        { 
+            title: "The Psychology of Money", 
+            cover: "the-psychology-of-money.jpg",
+            pdf: "The-Psychology-of-Money.pdf" 
+        },
+        { 
+            title: "Le Petit Prince", 
+            cover: "le-petit-prince.jpg",
+            pdf: "Le-Petit-Prince.pdf" 
+        },
+        { 
+            title: "À la recherche du temps perdu", 
+            cover: "a-la-recherche-du-temps-perdu.jpg",
+            pdf: "A-La-Recherche-Du-Temps-Perdu.pdf" 
+        },
+        { 
+            title: "L'Étranger", 
+            cover: "l-etranger.jpg",
+            pdf: "L-Etranger.pdf" 
+        },
+        { 
+            title: "Madame Bovary", 
+            cover: "madame-bovary.jpg",
+            pdf: "Madame-Bovary.pdf" 
+        },
+        { 
+            title: "Les Misérables", 
+            cover: "les-miserables.jpg",
+            pdf: "Les-Miserables.pdf" 
+        },
+        { 
+            title: "أرض زيكولا", 
+            cover: "ard-zikola.jpg",
+            pdf: "Ard-Zikola.pdf" 
+        }
+    ];
+
+    const bookGrid = document.getElementById('bookGrid');
+
+    books.forEach(book => {
+      const card = document.createElement('div');
+      card.className = 'book-card';
+      card.innerHTML = `
+        <img src="covers/${book.cover}" alt="${book.title}" />
+        <h3>${book.title}</h3>
+        <a href="pdfs/${book.pdf}" download>Download PDF</a>
+      `;
+      bookGrid.appendChild(card);
+    });
+
+    const form = document.getElementById('requestForm');
+    const confirmationMsg = document.getElementById('confirmationMsg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById('title').value.trim();
+      const author = document.getElementById('author').value.trim();
+      const email = document.getElementById('email').value.trim();
+
+      const webhookURL = "https://discord.com/api/webhooks/1385203958712107008/a9jJ1TX51cQMcAc738Gss2trsJek6tSXmsqmLzsd3YaZZoSCQf49MaOiz8zSese4Od_9"; // Replace this
+
+      const payload = {
+        content: `📖 New Book Request\n**Title:** ${title}\n**Author:** ${author || "N/A"}\n**Email:** ${email || "N/A"}`
+      };
+
+      try {
+        await fetch(webhookURL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        confirmationMsg.textContent = "✅ Request sent successfully!";
+        form.reset();
+      } catch (error) {
+        confirmationMsg.textContent = "⚠️ Error sending request.";
+        console.error("Webhook error:", error);
+      }
+    });
+  </script>
+
+</body>
+</html>
